@@ -50,3 +50,19 @@ impl Solution {
         0
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::Solution;
+
+    #[test]
+    fn test976() {
+        let nums = vec![2, 1, 2];
+        let r = Solution::largest_perimeter(nums);
+        assert_eq!(r, 5);
+
+        let nums = vec![1, 2, 1, 10];
+        let r = Solution::largest_perimeter(nums);
+        assert_eq!(r, 0);
+    }
+}
