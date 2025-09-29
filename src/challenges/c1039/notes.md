@@ -1,0 +1,5 @@
+- The cache method was fundamental to speed up the solution. Originally it guaranteed uniquess of the hash (i,j) by computing the hash as i*n + j, where n is the length of the input array. Example: example: (2,5) and (3,4) summed are both 7, but in presence of 10 elements it becomes 25 and 34
+
+- However, since values are not huge in length, I thought we could have a matrix-cache which is more cpucache-friendly. This allows to save and read values on the stack, without heap allocations. MOreover, since all the values are positive, I thought that setting -1 as "NOT SET" would be a good idea, saving 1 byte compared with using Option<i32>. Using the "matrix cache" the execution time dropped from 8ms to 0ms, reducing also memory usage from 2.4 to 2.2 MB
+
+- I realized that, when set on the cache, the value is always strictly positive, so I could use 0 as "NOT SET" marker
