@@ -33,41 +33,54 @@
 // Remarks:
 // - A closing parenthesis without a previous open one is surely to be discarded (you can remove parenthesis, not adding it)
 // - All the opening parenthesis should be closed as well: a counter might do this job
+
+// ( [40]
+// ) [41]
+// we set u8::MAX as marker for removable index
 use super::*;
 impl Solution {
-    pub fn min_remove_to_make_valid(s: String) -> String {
+    pub fn min_remove_to_make_valid(mut s: String) -> String {
         let mut flag_open: u32 = 0;
         let mut flag_closed: u32 = 0;
         let n = s.len();
 
-        let mut out: Vec<Option<char>> = s.chars().map(Some).collect::<Vec<_>>();
+        let raw = unsafe { s.as_bytes_mut() };
 
         for i in 0..n {
-            let f = out[i];
-            let b = out[n - 1 - i];
+            let f = raw[i];
+            let b = raw[n - 1 - i];
 
             //forward iterate
-            if f == Some(')') {
+
+            if 41.eq(&f) {
                 if flag_open == 0 {
-                    out[i] = None
+                    raw[i] = u8::MAX;
                 }
                 flag_open = flag_open.saturating_sub(1);
-            } else if f == Some('(') {
+            } else if 40.eq(&f) {
                 flag_open += 1;
             }
 
             //baxckward iterate
-            if b == Some('(') {
+            if 40.eq(&b) {
                 if flag_closed == 0 {
-                    out[n - 1 - i] = None
+                    raw[n - 1 - i] = u8::MAX;
                 }
                 flag_closed = flag_closed.saturating_sub(1);
-            } else if b == Some(')') {
+            } else if 41.eq(&b) {
                 flag_closed += 1;
             }
         }
 
-        out.into_iter().flatten().collect()
+        let raw = raw.iter().filter(|x| !u8::MAX.eq(x));
+
+        let mut s = String::with_capacity(raw.size_hint().0);
+        unsafe {
+            let vec = s.as_mut_vec(); // get underlying Vec<u8>
+            vec.extend(raw.cloned()); // extend in-place
+        }
+
+        s
     }
 }
 
@@ -88,5 +101,13 @@ mod test {
         let s = "))((";
         let out = Solution::min_remove_to_make_valid(s.to_string());
         assert!(&out.is_empty());
+    }
+
+    #[test]
+    fn byte() {
+        println!("( {:?}", "(".as_bytes());
+        println!(") {:?}", ")".as_bytes());
+        let s = String::from_utf8_lossy(&[u8::MAX]);
+        println!("{s}");
     }
 }
