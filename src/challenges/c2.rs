@@ -26,6 +26,8 @@
 //! 0 <= Node.val <= 9
 //! It is guaranteed that the list represents a number that does not have leading zeros.
 
+use std::ops::Deref;
+
 use super::*;
 
 // Definition for singly-linked list.
@@ -54,6 +56,27 @@ impl From<Vec<i32>> for ListNode {
     }
 }
 
+struct IterNode(Option<Box<ListNode>>);
+
+impl Deref for IterNode {
+    type Target = Option<Box<ListNode>>;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl Iterator for IterNode {
+    type Item = i32;
+    fn next(&mut self) -> Option<Self::Item> {
+        let Some(inner) = &mut self.0 else {
+            return None;
+        };
+        let out = Some(inner.val);
+        self.0 = inner.next.take();
+        out
+    }
+}
+
 impl Solution {
     pub fn update_output(v: Box<ListNode>, out: &mut Option<Box<ListNode>>) {
         let Some(inner) = out else {
@@ -63,27 +86,17 @@ impl Solution {
         Self::update_output(v, &mut inner.next);
     }
     pub fn add_two_numbers(
-        mut l1: Option<Box<ListNode>>,
-        mut l2: Option<Box<ListNode>>,
+        l1: Option<Box<ListNode>>,
+        l2: Option<Box<ListNode>>,
     ) -> Option<Box<ListNode>> {
         let mut add_one = false;
         let mut out = None;
+        let mut l1 = IterNode(l1);
+        let mut l2 = IterNode(l2);
+
         while l1.is_some() || l2.is_some() || add_one {
-            let a = if let Some(inner) = l1 {
-                l1 = inner.next;
-                inner.val
-            } else {
-                0
-            };
-
-            let b = if let Some(inner) = l2 {
-                l2 = inner.next;
-                inner.val
-            } else {
-                0
-            };
-
-            let val = a + b + i32::from(add_one);
+            let val =
+                l1.next().unwrap_or_default() + l2.next().unwrap_or_default() + i32::from(add_one);
             add_one = val >= 10;
 
             Self::update_output(Box::new(ListNode::new(val % 10)), &mut out);
