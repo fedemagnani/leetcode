@@ -40,8 +40,8 @@
 use super::*;
 impl Solution {
     pub fn min_remove_to_make_valid(mut s: String) -> String {
-        let mut flag_open: u32 = 0;
-        let mut flag_closed: u32 = 0;
+        let mut flag_open: u8 = 0;
+        let mut flag_closed: u8 = 0;
         let n = s.len();
 
         let raw = unsafe { s.as_bytes_mut() };

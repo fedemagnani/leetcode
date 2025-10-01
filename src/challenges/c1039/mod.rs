@@ -49,8 +49,6 @@
 //! 3 <= n <= 50
 //! 1 <= values[i] <= 100
 
-use std::{collections::HashMap, i32};
-
 use super::*;
 
 // The input array can immediately tell us:
