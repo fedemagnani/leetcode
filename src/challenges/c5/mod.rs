@@ -22,6 +22,42 @@ use super::*;
 
 impl Solution {
     pub fn longest_palindrome(s: String) -> String {
+        let chars: Vec<char> = s.chars().collect();
+        let n = chars.len();
+        if n <= 1 {
+            return s;
+        }
+
+        let mut best_start = 0;
+        let mut best_len = 1;
+
+        // helper closure for expansion
+        // we give a chance to each char to be a center
+
+        let mut expand = |mut l: isize, mut r: isize| {
+            // we keep widening the interval until we find two characters matching
+            // it will continue widening the interval as soon as the palyndrome rule is met
+            while l >= 0 && (r as usize) < n && chars[l as usize] == chars[r as usize] {
+                l -= 1;
+                r += 1;
+            }
+            // after breaking, palindrome is (l+1 .. r-1)
+            let len = (r - l - 1) as usize;
+            if len > best_len {
+                best_len = len;
+                best_start = (l + 1) as usize;
+            }
+        };
+
+        for i in 0..n {
+            expand(i as isize, i as isize); // odd length (aba)
+            expand(i as isize, i as isize + 1); // even length (abba)
+        }
+
+        chars[best_start..(best_start + best_len)].iter().collect()
+    }
+
+    pub fn longest_palindrome_skill_issue_version(s: String) -> String {
         let l = s.len();
         if l == 1 {
             return s;
@@ -122,7 +158,6 @@ mod test {
     fn test5() {
         let s = "babad";
         let out = Solution::longest_palindrome(s.to_string());
-        println!("{out}");
         debug_assert!(out == "bab" || out == "aba");
 
         let s = "cbbd";
