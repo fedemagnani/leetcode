@@ -1,4 +1,7 @@
 - Each palindrome has a **center**, which might be:
   - a single character (for odd-length palindromes)
   - a set of equal characters (for even-length palindromes)
-
+- Iterating on each characte, we can try to expand around it as long as the palindrome property is satisfied
+  - Once it is not satisfied anymore, we read the length of the palindrome found and the index of its start
+  - we store it if the length is the best found so far
+- Finally, given the starting index and the length of the best palindrome found, we can return the substring

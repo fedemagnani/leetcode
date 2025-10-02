@@ -1,0 +1,4 @@
+- This is the typical exercise that demonstrates how matrix caches are theorethically elegant, but extremely not cache-friendly with a lot of data
+- Indeed, in our case we are allocating a lot of memory: num_rows * num_cols * size_of(char)
+- Working directly with strings, allows us to save a lot of memory, computation and complexity
+- Moreover, using a boolean flag instead of a isize is faster and allows to avoid a lot of casting from usize to isize
