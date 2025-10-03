@@ -3,6 +3,7 @@ pub struct Solution;
 mod challenges {
     use super::*;
     mod c1;
+    mod c10;
     mod c1039;
     mod c1249;
     mod c1558;
