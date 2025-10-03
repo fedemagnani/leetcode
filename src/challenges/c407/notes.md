@@ -1,0 +1,17 @@
+- my original approach was to iterate through each cell of the matrix and inspect "the cross" of values around it
+  - the idea was that the cell could hold a pond if the cell was surrounded by a box or by an empty space close to an empty space, ..., eventually close to a box
+  - however, this approach failed being:
+    - too verbose
+    - in some configuration, it set ponds where there were none
+
+- We can first iterate over the boundary of the "pool", pushing on some stack the cells were the water "could leak" (smallest at the top of the stack):
+ - this is extremely important as boundary cells are upper bound of the water that can be held by the consequent cells
+ - we use a [`BinaryHeap`], pushing the cell value and its coordinate
+ - recall that [`BinaryHeap`] sorts internally via lexicographic order (subsequent values of the tuples are compared only in case of ambiguity on the comparison of fist element of the tuple)
+- Then, iterating from the cell with smallest value, we inspect the "cross" around that cell
+ - the "cross" inspection is ordered as follows: down, top, right, left
+ - a matrix maps visited cells, so that algo can skip them
+ - if the neighbor cell is smaller, the result is increased by the difference.
+ - then, the interior cell is put on the [`BinaryHeap`], using as value the maximum between its original value and the compared cell
+     - it keeps the original value (box), if it has a higher value than the compared cell
+     - it uses the compared cell's value (water), if it's original vlaue is lower, meaning that it gets filled of water until allowable value

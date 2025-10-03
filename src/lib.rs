@@ -11,6 +11,7 @@ mod challenges {
     mod c3;
     mod c3100;
     mod c4;
+    mod c407;
     mod c5;
     mod c6;
     mod c7;
