@@ -1,13 +1,13 @@
 //! Seven different symbols represent Roman numerals with the following values:
 //!
-//! Symbol	Value
-//! I	1
-//! V	5
-//! X	10
-//! L	50
-//! C	100
-//! D	500
-//! M	1000
+//! Symbol  Value
+//! I   1
+//! V   5
+//! X   10
+//! L   50
+//! C   100
+//! D   500
+//! M   1000
 //! Roman numerals are formed by appending the conversions of decimal place values from highest to lowest. Converting a decimal place value into a Roman numeral has the following rules:
 //!
 //! If the value does not start with 4 or 9, select the symbol of the maximal value that can be subtracted from the input, append that symbol to the result, subtract its value, and convert the remainder to a Roman numeral.
@@ -58,76 +58,26 @@
 
 //! 1 <= num <= 3999
 
-use super::*;
+// a naive approach might be creating a huge if/continue block, but it is not ideal since it involves branch prediction.
+// instead here we create a cache-friendly SoA and, iterating on each symbol, we deflate the number as much as we can using the i-th symbol
 
-// struct
+use super::*;
 
 impl Solution {
     pub fn int_to_roman(mut num: i32) -> String {
-        let mut out = String::new();
-        while num > 0 {
-            if num >= 1000 {
-                num -= 1000;
-                out.push('M');
-                continue;
+        const VALUES: [i32; 13] = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+        const SYMBOLS: [&str; 13] = [
+            "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I",
+        ];
+
+        let mut out = String::with_capacity(15); // preallocate using lenght of longest possible number <= 3999: MMMDCCCLXXXVIII
+
+        for (i, &val) in VALUES.iter().enumerate() {
+            //squeeze the number as much as you can
+            while num >= val {
+                num -= val;
+                out.push_str(SYMBOLS[i]);
             }
-            if num >= 900 {
-                num -= 900;
-                out.push_str("CM");
-                continue;
-            }
-            if num >= 500 {
-                num -= 500;
-                out.push('D');
-                continue;
-            }
-            if num >= 400 {
-                num -= 400;
-                out.push_str("CD");
-                continue;
-            }
-            if num >= 100 {
-                num -= 100;
-                out.push('C');
-                continue;
-            }
-            if num >= 90 {
-                num -= 90;
-                out.push_str("XC");
-                continue;
-            }
-            if num >= 50 {
-                num -= 50;
-                out.push('L');
-                continue;
-            }
-            if num >= 40 {
-                num -= 40;
-                out.push_str("XL");
-                continue;
-            }
-            if num >= 10 {
-                num -= 10;
-                out.push('X');
-                continue;
-            }
-            if num >= 9 {
-                num -= 9;
-                out.push_str("IX");
-                continue;
-            }
-            if num >= 5 {
-                num -= 5;
-                out.push('V');
-                continue;
-            }
-            if num >= 4 {
-                num -= 4;
-                out.push_str("IV");
-                continue;
-            }
-            num -= 1;
-            out.push('I');
         }
 
         out
@@ -150,5 +100,20 @@ mod test {
         let num = 1994;
         let out = Solution::int_to_roman(num);
         debug_assert_eq!(out, "MCMXCIV".to_string());
+    }
+    #[test]
+    fn max_roman() {
+        let mut len = 0;
+        let mut biggest = "".to_string();
+        for i in 1..4000 {
+            let out = Solution::int_to_roman(i);
+            let l = out.len();
+            if l > len {
+                len = l;
+                biggest = out;
+            }
+        }
+        assert_eq!(len, 15);
+        assert_eq!(biggest, "MMMDCCCLXXXVIII".to_string());
     }
 }
