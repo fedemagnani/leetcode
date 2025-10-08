@@ -40,33 +40,50 @@ use super::*;
 impl Solution {
     pub fn successful_pairs(spells: Vec<i32>, mut potions: Vec<i32>, success: i64) -> Vec<i32> {
         let n = spells.len();
-        let m = potions.len();
-        potions.sort();
-        let min = success / *potions.iter().next_back().unwrap() as i64;
+        potions.sort_by(|a, b| b.cmp(a));
+        let min = success / *potions.first().unwrap() as i64;
 
         let mut out = vec![0; n];
         for (i, spell) in spells.iter().enumerate() {
             if (*spell as i64) < min {
                 continue;
             }
+
+            // Adjust interval exploiting previous iteration information
+            let potions = if i > 0 {
+                let prev_i = i - 1;
+                let prev_spell = spells[prev_i];
+                if spell < &prev_spell {
+                    &potions[..out[prev_i] as usize]
+                } else if spell > &prev_spell {
+                    out[i] = out[prev_i];
+                    &potions[out[prev_i] as usize..]
+                } else {
+                    out[i] = out[prev_i];
+                    continue;
+                }
+            } else {
+                &potions
+            };
+
             let mut low = 0;
-            let mut high = m;
+            let mut high = potions.len();
 
             while high > low {
                 let mid_i = (low + high) / 2;
 
                 let mid = *spell as i64 * potions[mid_i] as i64;
 
-                if success > mid {
+                if success <= mid {
                     low = mid_i + 1;
                 } else {
                     high = mid_i;
                 }
             }
-            out[i] = m - low
+            out[i] += low as i32
         }
 
-        out.into_iter().map(|x| x as i32).collect()
+        out
     }
 }
 
