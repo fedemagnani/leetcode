@@ -19,6 +19,7 @@ mod challenges {
     mod c2221;
     mod c2273;
     mod c2300;
+    mod c2598;
     mod c3;
     mod c3100;
     mod c3147;
