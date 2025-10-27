@@ -1,4 +1,7 @@
 pub struct Solution;
+pub struct Bank {
+    bal: Vec<i64>,
+}
 
 mod challenges {
     use super::*;
@@ -19,6 +22,7 @@ mod challenges {
     mod c2;
     mod c20;
     mod c2011;
+    mod c2043;
     mod c2048;
     mod c2221;
     mod c2273;
