@@ -24,9 +24,9 @@
 //!  * bank[0][5] -- bank[2][3]
 //!  * bank[2][1] -- bank[3][2]
 //!  * bank[2][3] -- bank[3][2]
-//! Note that there is no beam between any device on the 0th row with any on the 3rd row.
-//! This is because the 2nd row contains security devices, which breaks the second condition.
-//! Example 2:
+//!    Note that there is no beam between any device on the 0th row with any on the 3rd row.
+//!    This is because the 2nd row contains security devices, which breaks the second condition.
+//!    Example 2:
 //!
 //!
 //! Input: bank = ["000","111","000"]
