@@ -40,6 +40,7 @@ mod challenges {
     mod c3217;
     mod c3289;
     mod c3318;
+    mod c3321;
     mod c3346;
     mod c3347;
     mod c3349;
