@@ -59,6 +59,7 @@ mod challenges {
     mod c4;
     mod c407;
     mod c417;
+    mod c474;
     mod c5;
     mod c6;
     mod c7;
