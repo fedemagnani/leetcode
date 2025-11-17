@@ -13,6 +13,7 @@ mod challenges {
     mod c1249;
     mod c13;
     mod c14;
+    mod c1437;
     mod c1488;
     mod c15;
     mod c1513;
