@@ -7,6 +7,7 @@ mod challenges {
     use super::*;
     mod c1;
     mod c10;
+    mod c1018;
     mod c1039;
     mod c11;
     mod c12;
