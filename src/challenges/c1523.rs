@@ -21,12 +21,11 @@
 use super::*;
 
 impl Solution {
+    /// Recall that x>>1 returns the number of odd numbers inside [0, x)
+    /// As a result, (high + 1) >> 1 counts the number of odds number in interval [0, high]
+    /// However, since we need to restrict the search just for interval [low,high], we also need to subtract all the odd numbers
+    /// in range [0,low)
     pub fn count_odds(low: i32, high: i32) -> i32 {
-        (low..=high).fold(0, |mut acc, x| {
-            if x % 2 != 0 {
-                acc += 1;
-            }
-            acc
-        })
+        ((high + 1) >> 1) - (low >> 1)
     }
 }
