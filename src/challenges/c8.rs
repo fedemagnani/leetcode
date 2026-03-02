@@ -182,38 +182,6 @@ mod test {
     use super::*;
     #[test]
     fn test8() {
-        // let s = "42";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, 42);
-
-        // let s = " -042";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, -42);
-
-        // let s = "1337c0d3";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, 1337);
-
-        // let s = "0-1";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, 0);
-
-        // let s = "words and 987";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, 0);
-
-        // let s = "-91283472332";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, -2147483648);
-
-        // let s = "  0000000000012345678";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, 12345678);
-
-        // let s = "-6147483648";
-        // let out = Solution::my_atoi(s.to_string());
-        // debug_assert_eq!(out, -2147483648);
-
         let s = "20000000000000000000";
         let out = Solution::my_atoi(s.to_string());
         debug_assert_eq!(out, 2147483647);
